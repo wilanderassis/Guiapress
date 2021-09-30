@@ -5,13 +5,14 @@
             <hr>
             <div class="card">
                 <div class="card-header">
-                    <h2>Cadastro de categorias</h2>
+                    <h2>Editar categorias</h2>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="/categories/save">
+                    <form method="POST" action="/categories/update">
                         <input type="text" name="title" id="title" placeholder="Defina o título da categoria"
-                            class="form-control">
-                        <button class="btn btn-primary mt-3">Cadastrar</button>
+                            class="form-control" value="<%= category.title %>">
+                        <input type="hidden" name="id" value="<%= category.id %>">
+                        <button class="btn btn-primary mt-3">Atualizar</button>
                     </form>
                 </div>
             </div>
