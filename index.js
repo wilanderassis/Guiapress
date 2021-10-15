@@ -8,7 +8,7 @@ const connection = require('./database/database')
 
 /* IMPORT DOS CONTROLLERS */
 const categoriesController = require('./categories/CategoriesController')
-const articlesController = require('./categories/CategoriesController')
+const articlesController = require('./articles/ArticlesController')
 
 /* IMPORT DOS MODELS */
 const Category = require('./categories/Category');
@@ -34,8 +34,38 @@ connection.authenticate()
     })
 
 app.get('/', (req, res) => {
-    res.render('index');
+    Article.findAll({
+        order: [['id', 'DESC']]
+    })
+        .then((articles) => {
+            Category.findAll()
+                .then((categories) => {
+                    res.render('index', { articles: articles, categories: categories });
+                })
+        })
 });
+
+app.get('/:slug', (req, res) => {
+    let slug = req.params.slug;
+    Article.findOne({
+        where: {
+            slug: slug
+        }
+    })
+        .then((article) => {
+            if (article != undefined) {
+                Category.findAll()
+                    .then((categories) => {
+                        res.render('article', { article: article, categories: categories });
+                    })
+            } else {
+                res.redirect('/');
+            }
+        })
+        .catch((error) => {
+            res.redirect('/');
+        })
+})
 
 /* CHAMADA DOS CONTROLLERS */
 app.use('/', categoriesController)
