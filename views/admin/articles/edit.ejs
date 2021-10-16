@@ -1,0 +1,43 @@
+<%- include ('../../partials/header.ejs') %>
+    <%- include ('../../partials/navbar.ejs') %>
+
+        <div class="container">
+            <hr>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Editar de artigos</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/articles/update">
+                        <input type="hidden" value="<%= article.id %>" name="id">
+                        <input type="text" name="title" id="title" placeholder="Escreva o artigo aqui."
+                            class="form-control mb-3" value="<%= article.title %>">
+                        <textarea class="form-control" id="article" name="body" cols="30" rows="10"><%= article.body %></textarea>
+                        <label class="mt-3">Categoria</label>
+                        <select class="form-control" name="category" id="categoria">
+                            <% categories.forEach((category)=>{ %>
+
+                                <%  if(category.id == article.categoryId){ %>
+                                    <option value="<%= category.id %>" selected><%= category.title %></option>
+                                <%  }else{ %>
+                                    <option value="<%= category.id %>"><%= category.title %></option>
+                                <%  } %>
+
+                            <% }) %>
+                        </select>
+                        <button class="btn btn-primary mt-3">Atualizar</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <%- include ('../../partials/footer.ejs') %>
+            <script src="/tinymce/tinymce.min.js"></script>
+            <script>
+                tinymce.init({
+                    language: 'pt_BR',
+                    selector: '#article',
+                    plugins: ['advlist autolink link image list print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons']
+                })
+            </script>
